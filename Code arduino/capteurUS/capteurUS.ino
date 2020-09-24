@@ -38,7 +38,11 @@ double distanceComputation(USsensor *usSensor){
   digitalWrite(usSensor->triggerPin, LOW);
 
   pulseDuration = pulseIn(usSensor->echoPin, HIGH);  // retourne des micro secondes
-  distanceInCM = (pulseDuration*340/2)/pow(10,4);   // pow(nombre, exposant) -> transforme en cm
+  
+  // Pour le numérateur, on prend la durée que met l'ultrason pour être détecté /2 (allé + retour = 2x la distance voulue)
+  //      et on multiplie par 340 qui est la vitesse du son en m/s afin d'obtenir la distance en m.
+  // Ensuite on utilise "pow(nombre, exposant)" pour transformer en cm la distance en donné en m.
+  distanceInCM = (pulseDuration*340/2)/pow(10,4);  
 
   // Test permettant de vérifier si la mesure prise est correcte ou pas (si elle est pas trop différente de la précédente).
   //    - La première comparaison permet de vérifier si la valeur actuel n'est pas trop différente de la
