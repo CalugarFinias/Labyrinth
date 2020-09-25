@@ -1,7 +1,6 @@
 #define DISTANCE_ERROR 5  // marge à partir de laquel on accepte la mesure ou pas
 #define US_SENSOR_TRIG_PIN 2
 #define US_SENSOR_ECHO_PIN 3
-#define LOOP_WAIT 1 // nombre de seconde à attendre entre chaque prise de mesure 
 
 struct USsensor{
   unsigned char triggerPin;
@@ -19,8 +18,7 @@ void setup() {
 }
  
 void loop() { 
-  displayDistance(&usSensor); 
-  delay(LOOP_WAIT*1000);
+  Serial.println(distanceComputation(usSensor)); 
 }
 
 void usSensorInitialize(USsensor *usSensor, unsigned char trig, unsigned char echo){
@@ -50,15 +48,10 @@ double distanceComputation(USsensor *usSensor){
   //    - La deuxième comparaison permet de s'assurer de ne pas prendre en compte la variable inisialisé (=0).
   //    - La troisième s'assure qu'on est pas dans des distances trop courte car 5x 2cm = 10cm => ce qui n'est pas 
   //      impossible que le robot fasse comme distance vu la courte distance.
+  /*
   if((distanceInCM > DISTANCE_ERROR*usSensor->lastDistance) && (usSensor->lastDistance != 0) && (usSensor->lastDistance > 10.0))
     distanceInCM = usSensor->lastDistance;
 
-  usSensor->lastDistance = distanceInCM;
+  usSensor->lastDistance = distanceInCM;*/
   return distanceInCM;
-}
-
-void displayDistance(USsensor *usSensor){
-  double distance = 0;
-  distance = distanceComputation(usSensor);
-  Serial.println(distance);
 }
