@@ -18,7 +18,8 @@ void setup() {
 }
  
 void loop() { 
-  Serial.println(distanceComputation(&usSensor)); 
+  distanceUSsensor = distanceComputation(&usSensor);
+  Serial.println(distanceUSsensor); 
 }
 
 void usSensorInitialize(USsensor *usSensor, unsigned char trig, unsigned char echo){
