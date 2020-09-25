@@ -1,4 +1,4 @@
-#define DISTANCE_ERROR 5  // marge à partir de laquel on accepte la mesure ou pas
+//#define DISTANCE_ERROR 5  // marge à partir de laquel on accepte la mesure ou pas
 #define US_SENSOR_TRIG_PIN 2
 #define US_SENSOR_ECHO_PIN 3
 
@@ -18,7 +18,7 @@ void setup() {
 }
  
 void loop() { 
-  Serial.println(distanceComputation(usSensor)); 
+  Serial.println(distanceComputation(&usSensor)); 
 }
 
 void usSensorInitialize(USsensor *usSensor, unsigned char trig, unsigned char echo){
