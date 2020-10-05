@@ -1,0 +1,19 @@
+Mettre les grandes lignes de décision (algorithmique) dans le Rpi et mettre tout le code propre aux capteurs dans l'arduino
+
+mettre rasp en Access point 
+Xming pour ecran
+
+( Trouver un système de communication (réponse adaptable) entre code python et suivi graphique )
+
+
+CaptA fixe suit le mur de droite
+captB monté sur servo regarde vers l'avant et si B détecte un mur à moins d'une certaine dist, regarde à gauche si mur ou pas 
+		si oui et mur a droite : signifie cul de sac ==> demi tour
+		si non et mur à droite : tourner à gauche
+
+Finias Calugar: Le robot doit suivre le mur de droite a distance constante
+Yassin Souidi: Le robot fait demi-tour quand il détecte un cul-de-sac
+Abas Sliti: suite du design PCB et recherche design 3D servo moteur et ultrasons
+Jonathan Miel: Envoi et interprétation des résultats du capteur US + mettre rasp en Access point
+Charles Vandermies: Commencer à implémenter la situation de l'intersection 
+Robert François: Commencer à implémenter la situation du cul de sac
