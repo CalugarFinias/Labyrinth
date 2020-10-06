@@ -6,9 +6,9 @@ class Utility:
     """
     dataWheelLeft = "WheelLeft"
     dataWheelRight = "WheelRight"
-    dataFrontUsSensor = "FrontUsSensor"
+    dataUsSensorOnServo = "UsSensorOnServo"
     dataRightUsSensor = "RightUsSensor"
     dataServo = "Servo"
-    #-----------------------------------------------
-    # signifie aucun changement pour le capteur, appareil du robot, il doit donc rester à son état précédent.
+    #--------------------------------------------------------------------------------------------------------------
+    # signifie aucun changement pour l'appareil électronique concernant le robot, il doit donc rester à son état précédent.
     noChange = 'n'
