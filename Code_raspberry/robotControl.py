@@ -35,20 +35,22 @@ class RobotControl(object):
             :return: Retourne la valeur du type voulu de données voulues ( ex : si on met dataWheelLeft ca retourne
                         la donné concernant la roue gauche du robot).
         """
+        identificationCode = ''
+        # todo : mettre les code d'identification dans utility pour éviter des erreurs
         if(dataType == Utility.dataWheelLeft):
-            return 0
+            identificationCode = 'w'
 
         elif(dataType == Utility.dataWheelRight):
-            return 0
+            identificationCode = 'x'
 
         elif(dataType == Utility.dataFrontUsSensor):
-            return 0
+            identificationCode = 'u'
 
         elif(dataType == Utility.dataRightUsSensor):
-            return 0
+            identificationCode = 'i'
 
         else:
-            return 0
+            identificationCode = 's'
         # TODO : ici on mettra l'envois de données
 
     def dataAreReceived(self):
