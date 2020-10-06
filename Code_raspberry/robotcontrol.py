@@ -1,11 +1,11 @@
-from utility import Utility
+from utility import *
 
 class RobotControl(object):
     """
         Classe permettant de gérer le robot (roues, capteur etc), soit en envoyant des instruction à l'arduino, soit en
             demandant des informations venant des capteurs.
     """
-    __dataReceived = 0
+    __dataAreReceived = 0
     def __init__(self):
         self.__wheelLeftValue = 0
         self.__wheelRightValue = 0
@@ -46,9 +46,14 @@ class RobotControl(object):
 
         else:
             return 0
+        # TODO : ici on mettra l'envois de données
 
-    def dataIsReceived(self):
-        return RobotControl.__dataReceived
+    def dataAreReceived(self):
+        """
+            Permet de savoir si des données on été recue de larduino.
+        :return: 1 si des données sont recues, 0 sinon.
+        """
+        return RobotControl.__dataAreReceived
 
 #---------------------------------------------------------------------------------------------------------- SET & GET
 
