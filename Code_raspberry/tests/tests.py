@@ -7,5 +7,5 @@ class Tests(TestCase):
         self.assertEqual(0, RobotControl().dataAreReceived())
 
     def test_wait(self):
-        wait(2)
+        #wait(2)
         self.assertEqual(0, 0)

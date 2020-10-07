@@ -1,37 +1,28 @@
 from robotControl import *
-from time import time
 
 
 # valeur à partir de laquelle on considère qu'il n'y a pas de chemin et donc un mur.
 wallDistance = 10
 
 
-def wait(waitTime):
-    # si le temps d'attente est trop long, alors c'est qu'il y a un soucis et que l'opération n'a pas été faite correctement.
-    oldTime = time()
-    while not (RobotControl().dataAreReceived()):
-        currentTime = time()
-        if ((currentTime - oldTime) > waitTime):
-            # si on sort de la boucle après avoir attendu un temps trop long (défini dans waitTime),
-            # alors c'est qu'il y a un soucis.
-
-            dataAreReceived = 0
-            break
-
 def getDataFromArduino(dataType):
-    robCrl = RobotControl()
+    n = Utility.noChange
+    robCrl = RobotControl()   
+    # todo 1 : refactorer en fonction des todo 1
+    robCrl.setArduinoValue(n, n, n, 0, 0)
     data = robCrl.receiveDataFromArduino(dataType)
     # temps d'attente en secondes pour la réception de données.
-    wait(2)
+    #wait(2)
     return data
 
 
 
 def commandMotors(wheelLeft, wheelRight, servo):
     robCrl = RobotControl()
-    robCrl.setMotorsValue(wheelLeft, wheelRight, servo)#, arduinoDataList[2], arduinoDataList[3], arduinoDataList[4])
+    # todo 1 : refactorer en fonction des todo 1
+    robCrl.setArduinoValue(wheelLeft, wheelRight, servo, 0, 0)
     robCrl.sendDataToArduino()
-    wait(2)
+    #wait(2)
 
 
 

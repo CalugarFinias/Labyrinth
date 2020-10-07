@@ -1,5 +1,5 @@
 from utility import *
-#from serial import serial.Serial
+import serial
 
 
 class RobotControl(object):
@@ -16,17 +16,20 @@ class RobotControl(object):
         self.__rightUsSensor = 0
         self.__servoAngle = 0
 
+
     def sendDataToArduino(self):
         """
             Fonction permettant d'envoyer les différentes données concernant le controle du robot à l'arduino.
             Elle evnois donc une liste avec une valeur pour chaque composant du robot (roues, capteur etc).
         """
-        # todo : envoyé les donné
-        __serial = [str(self.__wheelLeftValue),
-                str(self.__wheelRightValue),
-                str(self.__frontUsSensor),
-                str(self.__rightUsSensor),
-                str(self.__servoAngle)]
+        # todo 1 : régler le fonclit entre receive data et cette fonction, définir clairement qui fait quoi
+        arduinoConn = ArduinoConnexion()
+        arduinoConn.sendData([str(self.__wheelLeftValue),
+                            str(self.__wheelRightValue),
+                            str(self.__frontUsSensor),
+                            str(self.__rightUsSensor),
+                            str(self.__servoAngle)])
+
 
     def receiveDataFromArduino(self, dataType):
         """
@@ -35,8 +38,8 @@ class RobotControl(object):
             :return: Retourne la valeur du type voulu de données voulues ( ex : si on met dataWheelLeft ca retourne
                         la donné concernant la roue gauche du robot).
         """
-        identificationCode = ''
-        # todo : mettre les code d'identification dans utility pour éviter des erreurs
+        # todo 1 : pareil que pour l'autre 1
+        identificationCode = ' '
         if(dataType == Utility.dataWheelLeft):
             identificationCode = 'w'
 
@@ -51,7 +54,11 @@ class RobotControl(object):
 
         else:
             identificationCode = 's'
-        # TODO : ici on mettra l'envois de données
+
+        arduinoConn = ArduinoConnexion()
+        arduinoConn.sendData(identificationCode)
+        return arduinoConn.readData()
+
 
     def dataAreReceived(self):
         """
@@ -59,21 +66,34 @@ class RobotControl(object):
         :return: 1 si des données sont recues, 0 sinon.
         """
         return RobotControl.__dataAreReceived
-
 #---------------------------------------------------------------------------------------------------------- SET & GET
-
-    def setArduinoValue(self, wheelLeftValue, wheelRightValue, servoAngle):#, frontUsSensor, rightUsSensor):
+    def setArduinoValue(self, wheelLeftValue, wheelRightValue, servoAngle, frontUsSensor, rightUsSensor):
         self.__wheelLeftValue = wheelLeftValue
         self.__wheelRightValue = wheelRightValue
         self.__servoAngle = servoAngle
-        #self.__frontUsSensor = frontUsSensor
-        #self.__rightUsSensor = rightUsSensor
+        self.__frontUsSensor = frontUsSensor
+        self.__rightUsSensor = rightUsSensor
+
+
 
 
 class ArduinoConnexion(object):
-    __periph = "/dev/ttyACM0"
-    __baudrate = 9600
-    #__serial = serial.Serial(__periph, __baudrate)
+    """
+        Class permettant de créer une connexion série avec le robot.
+    """
+    def __init__(self, periph = "/dev/ttyACM0", baudrate = 9600):
+        self.__serial = serial.Serial(periph, baudrate)
 
-    def __init__(self):
-        self.x = 0
+
+    def sendData(self, data):
+        while waitTime(2):
+            if (self.__serial.in_waiting > 0):
+                for element in data:
+                    self.__serial.write(element.encode())
+                break
+        self.__serial.close()
+
+
+    def readData(self):
+        return self.__serial.readline().decode('utf-8').rstrip()
+

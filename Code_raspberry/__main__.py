@@ -2,4 +2,8 @@ from robotControl import *
 from commonOperation import *
 
 
-print(Utility.dataRightUsSensor)
+
+
+x = RobotControl()
+
+print(x)
