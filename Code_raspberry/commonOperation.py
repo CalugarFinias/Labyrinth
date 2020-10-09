@@ -65,7 +65,7 @@ while True:
         #si chemin à gauche
         if (getLF > wallDistance):
             pathOnLeft = 1
-            commandMotors(0,3,0)
+            commandMotors(0,1,0)
         #demi tour    
         else :
             pathOnLeft = 0

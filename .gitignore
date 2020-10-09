@@ -1,0 +1,6 @@
+.vscode
+*.cfg
+Code_raspberry/.idea/
+Code_raspberry/Lib/
+Code_raspberry/Scripts/
+Code_raspberry/__pycache__/

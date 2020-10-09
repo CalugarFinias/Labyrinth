@@ -20,7 +20,7 @@ class RobotControl(object):
     def sendDataToArduino(self):
         """
             Fonction permettant d'envoyer les différentes données concernant le controle du robot à l'arduino.
-            Elle evnois donc une liste avec une valeur pour chaque composant du robot (roues, capteur etc).
+            Elle envoie donc une liste avec une valeur pour chaque composant du robot (roues, capteur etc).
         """
         # todo 1 : régler le fonclit entre receive data et cette fonction, définir clairement qui fait quoi
         arduinoConn = ArduinoConnexion()
@@ -31,12 +31,12 @@ class RobotControl(object):
                             str(self.__servoAngle)])
 
 
-    def receiveDataFromArduino(self, dataType):
+    def requestDataFromArduino(self, dataType):
         """
             Gère le processus de demande d'informations des différents composants du robot à l'arduino.
             :param dataType: Spécifie le type de données que l'on souhaite recevoir (capteurs des roues, capteurs us etc).
             :return: Retourne la valeur du type voulu de données voulues ( ex : si on met dataWheelLeft ca retourne
-                        la donné concernant la roue gauche du robot).
+                        la donnée concernant la roue gauche du robot).
         """
         # todo 1 : pareil que pour l'autre 1
         identificationCode = ' '
