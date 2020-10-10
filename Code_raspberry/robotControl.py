@@ -1,5 +1,6 @@
 from utility import *
 import serial
+from time import time
 
 
 class RobotControl(object):
@@ -7,6 +8,7 @@ class RobotControl(object):
         Classe permettant de gérer le robot (roues, capteur etc), soit en envoyant des instruction à l'arduino, soit en
             demandant des informations venant des capteurs.
     """
+    # todo 2 : voir si on en a besoin
     __dataAreReceived = 0
 
     def __init__(self):
@@ -17,12 +19,16 @@ class RobotControl(object):
         self.__servoAngle = 0
 
 
-    def sendDataToArduino(self):
+    def sendDataToArduino(self, wheelLeftValue, wheelRightValue, servoAngle, frontUsSensor, rightUsSensor):
         """
             Fonction permettant d'envoyer les différentes données concernant le controle du robot à l'arduino.
-            Elle envoie donc une liste avec une valeur pour chaque composant du robot (roues, capteur etc).
+            Elle evnois donc une liste avec une valeur pour chaque composant du robot (roues, capteur etc).
         """
-        # todo 1 : régler le fonclit entre receive data et cette fonction, définir clairement qui fait quoi
+        self.__wheelLeftValue = wheelLeftValue
+        self.__wheelRightValue = wheelRightValue
+        self.__servoAngle = servoAngle
+        self.__frontUsSensor = frontUsSensor
+        self.__rightUsSensor = rightUsSensor
         arduinoConn = ArduinoConnexion()
         arduinoConn.sendData([str(self.__wheelLeftValue),
                             str(self.__wheelRightValue),
@@ -36,9 +42,8 @@ class RobotControl(object):
             Gère le processus de demande d'informations des différents composants du robot à l'arduino.
             :param dataType: Spécifie le type de données que l'on souhaite recevoir (capteurs des roues, capteurs us etc).
             :return: Retourne la valeur du type voulu de données voulues ( ex : si on met dataWheelLeft ca retourne
-                        la donnée concernant la roue gauche du robot).
+                        la donné concernant la roue gauche du robot).
         """
-        # todo 1 : pareil que pour l'autre 1
         identificationCode = ' '
         if(dataType == Utility.dataWheelLeft):
             identificationCode = 'w'
@@ -59,21 +64,14 @@ class RobotControl(object):
         arduinoConn.sendData(identificationCode)
         return arduinoConn.readData()
 
-
-    def dataAreReceived(self):
+    # todo 2 : voir si on en a besoin
+    def __dataAreReceived(self):
         """
             Permet de savoir si des données on été recue de larduino.
         :return: 1 si des données sont recues, 0 sinon.
         """
         return RobotControl.__dataAreReceived
 #---------------------------------------------------------------------------------------------------------- SET & GET
-    def setArduinoValue(self, wheelLeftValue, wheelRightValue, servoAngle, frontUsSensor, rightUsSensor):
-        self.__wheelLeftValue = wheelLeftValue
-        self.__wheelRightValue = wheelRightValue
-        self.__servoAngle = servoAngle
-        self.__frontUsSensor = frontUsSensor
-        self.__rightUsSensor = rightUsSensor
-
 
 
 
@@ -86,14 +84,33 @@ class ArduinoConnexion(object):
 
 
     def sendData(self, data):
-        while waitTime(2):
+        i = 0
+        # Encode en binaire chaque éléments de data pour l'envoyer à l'arduino séparément car imposible
+        # de faire cette opération sur toute une liste en même temps.
+        for element in data:
+            data[i] = element.encode()
+            i += 1
+        self.__serial.write(data)
+        # todo 1 : voir si on ne doit pas mettre de fonction close
+
+
+    def readData(self, waitTime = 2):
+        """
+            Fonction permettant la lecture de données via le port com, attend un certain temps
+            la lecture sur le port com et s'arrête pour renvoyer le résultat.
+        :param waitTime: Temps d'attente de la réception des données au dela de laquelle
+                            elle s'arrête si rien n'a été recu après ce laps de temps en secondes.
+        :return: Renvois les données recues ou 0 si il y a eu un problèmes et que rien n'a été recu.
+        """
+        data = 0
+        oldTime, currentTime = time(), time()
+        # Si le temps d'attente est trop long, alors c'est qu'il y a un soucis et que l'opération
+        # n'a pas été faite correctement.
+        # todo 1 : voir si on ne doit pas mettre de fonction close
+        while ((currentTime - oldTime) > waitTime):
+            currentTime = time()
             if (self.__serial.in_waiting > 0):
-                for element in data:
-                    self.__serial.write(element.encode())
+                data = self.__serial.readline().decode('utf-8').rstrip()
                 break
-        self.__serial.close()
-
-
-    def readData(self):
-        return self.__serial.readline().decode('utf-8').rstrip()
+        return data
 
