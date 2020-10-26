@@ -1,9 +1,9 @@
 1)	Majuscule sur la première lettre d’une classe, minuscule sur le reste.
 
-2)	Placer les commentaires devant la ligne.
+2)	Placer les commentaires au dessus de la ligne.
 
 3)	On sépare 2 mots par une majuscule : parExemple.
 
 4)	Getter et setter avec "get" et "set" devant : getThink().
 
-5)	Séparer des conditions (>< and or etc) par des parenthèses : if ((x > y) and (y = x)).
+5)	Séparer des conditions (>< and or etc) par des parenthèses : if (x > y) and (y = x).
