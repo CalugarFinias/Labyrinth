@@ -12,7 +12,7 @@ def getDataFromArduino(dataType):
 
 
 
-def commandMotors(wheelLeft, wheelRight, servo):
+def commandMotors(wheelLeft, wheelRight):
     n = Utility.noChange
     robCrl = RobotControl()
     robCrl.sendDataToArduino(wheelLeft, wheelRight, n, n, n)

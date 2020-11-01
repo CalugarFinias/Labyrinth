@@ -1,6 +1,3 @@
-#from robotControl import *
-from time import time
-
 
 class Utility:
     """
@@ -8,9 +5,8 @@ class Utility:
     """
     dataWheelLeft = "WheelLeft"
     dataWheelRight = "WheelRight"
-    dataUsSensorOnServo = "UsSensorOnServo"
+    dataFrontUsSensor = "FrontUsSensor"
     dataRightUsSensor = "RightUsSensor"
-    dataServo = "Servo"
     #--------------------------------------------------------------------------------------------------------------
     # signifie aucun changement pour l'appareil électronique concernant le robot, il doit donc rester à son état précédent.
     noChange = 'n'

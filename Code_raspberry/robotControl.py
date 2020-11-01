@@ -8,34 +8,26 @@ class RobotControl(object):
         Classe permettant de gérer le robot (roues, capteur etc), soit en envoyant des instruction à l'arduino, soit en
             demandant des informations venant des capteurs.
     """
-    # todo 2 : voir si on en a besoin
-    __dataAreReceived = 0
-
     def __init__(self):
         self.__wheelLeftValue = 0
         self.__wheelRightValue = 0
         self.__frontUsSensor = 0
         self.__rightUsSensor = 0
-        self.__servoAngle = 0
 
-
-    def sendDataToArduino(self, wheelLeftValue, wheelRightValue, servoAngle, frontUsSensor, rightUsSensor):
+    def sendDataToArduino(self, wheelLeftValue, wheelRightValue, frontUsSensor, rightUsSensor):
         """
             Fonction permettant d'envoyer les différentes données concernant le controle du robot à l'arduino.
             Elle evnois donc une liste avec une valeur pour chaque composant du robot (roues, capteur etc).
         """
         self.__wheelLeftValue = wheelLeftValue
         self.__wheelRightValue = wheelRightValue
-        self.__servoAngle = servoAngle
         self.__frontUsSensor = frontUsSensor
         self.__rightUsSensor = rightUsSensor
         arduinoConn = ArduinoConnexion()
         arduinoConn.sendData([str(self.__wheelLeftValue),
                             str(self.__wheelRightValue),
                             str(self.__frontUsSensor),
-                            str(self.__rightUsSensor),
-                            str(self.__servoAngle)])
-
+                            str(self.__rightUsSensor)])
 
     def requestDataFromArduino(self, dataType):
         """
@@ -57,20 +49,10 @@ class RobotControl(object):
         elif(dataType == Utility.dataRightUsSensor):
             identificationCode = 'i'
 
-        else:
-            identificationCode = 's'
-
         arduinoConn = ArduinoConnexion()
         arduinoConn.sendData(identificationCode)
         return arduinoConn.readData()
 
-    # todo 2 : voir si on en a besoin
-    def __dataAreReceived(self):
-        """
-            Permet de savoir si des données on été recue de larduino.
-        :return: 1 si des données sont recues, 0 sinon.
-        """
-        return RobotControl.__dataAreReceived
 #---------------------------------------------------------------------------------------------------------- SET & GET
 
 
@@ -84,13 +66,9 @@ class ArduinoConnexion(object):
 
 
     def sendData(self, data):
-        i = 0
         # Encode en binaire chaque éléments de data pour l'envoyer à l'arduino séparément car imposible
         # de faire cette opération sur toute une liste en même temps.
-        for element in data:
-            data[i] = element.encode()
-            i += 1
-        self.__serial.write(data)
+        self.__serial.write([e.encode() for e in data])
         # todo 1 : voir si on ne doit pas mettre de fonction close
 
 
@@ -112,5 +90,12 @@ class ArduinoConnexion(object):
             if (self.__serial.in_waiting > 0):
                 data = self.__serial.readline().decode('utf-8').rstrip()
                 break
+
+        if (currentTime - oldTime) > waitTime:
+            raise Exception('temps d\'attente écoulé : '+ waitTime)
+        if data == 0:
+            raise Exception('les données n\'ont pas été reçues; data = '+ data)
+
         return data
+
 
