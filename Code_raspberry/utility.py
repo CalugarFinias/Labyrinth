@@ -10,3 +10,13 @@ class Utility:
     #--------------------------------------------------------------------------------------------------------------
     # signifie aucun changement pour l'appareil électronique concernant le robot, il doit donc rester à son état précédent.
     noChange = 'n'
+    """
+    #================================================================================================== actions
+    turnLeft = 'l'
+    turnRight = 'r'
+    stop = 's'
+    onwards = 'o'
+    getFrontUS = 'f'
+    getRightUS = 't'
+
+"""

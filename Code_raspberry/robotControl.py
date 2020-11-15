@@ -53,7 +53,7 @@ class RobotControl(object):
         arduinoConn.sendData(identificationCode)
         return arduinoConn.readData()
 
-#---------------------------------------------------------------------------------------------------------- SET & GET
+#============================================================================================== SET & GET
 
 
 
@@ -64,22 +64,20 @@ class ArduinoConnexion(object):
     def __init__(self, periph = "/dev/ttyACM0", baudrate = 9600):
         self.__serial = serial.Serial(periph, baudrate)
 
-
     def sendData(self, data):
-        # Encode en binaire chaque éléments de data pour l'envoyer à l'arduino séparément car imposible
-        # de faire cette opération sur toute une liste en même temps.
+        # Encode en binaire chaque éléments de data séparément pour l'envoyer
+        # à l'arduino car impossible de faire cette opération sur toute une liste en même temps.
         self.__serial.write([e.encode() for e in data])
         # todo 1 : voir si on ne doit pas mettre de fonction close
-
-
+    """
     def readData(self, waitTime = 2):
-        """
+        
             Fonction permettant la lecture de données via le port com, attend un certain temps
             la lecture sur le port com et s'arrête pour renvoyer le résultat.
         :param waitTime: Temps d'attente de la réception des données au dela de laquelle
                             elle s'arrête si rien n'a été recu après ce laps de temps en secondes.
         :return: Renvois les données recues ou 0 si il y a eu un problèmes et que rien n'a été recu.
-        """
+        
         data = 0
         oldTime, currentTime = time(), time()
         # Si le temps d'attente est trop long, alors c'est qu'il y a un soucis et que l'opération
@@ -92,10 +90,16 @@ class ArduinoConnexion(object):
                 break
 
         if (currentTime - oldTime) > waitTime:
-            raise Exception('temps d\'attente écoulé : '+ waitTime)
+            raise Exception('temps d\'attente écoulé, wait time = ' + str(waitTime))
         if data == 0:
-            raise Exception('les données n\'ont pas été reçues; data = '+ data)
+            raise Exception('les données n\'ont pas été reçues, data = ' + data)
 
         return data
+    """
 
-
+    def readData(self):
+        """
+        Fonction permettant de recevoir les données de l'arduino.
+        :return: Renvois une liste contenant toutes les données de l'arduino.
+        """
+        return self.__serial.readline().decode('utf-8').rstrip().split()

@@ -1,12 +1,11 @@
-from robotControl import *
-from commonOperation import *
-import serial
+from robotControl import RobotControl
 
 
 
 
-datas = ["test1","test2","test3"]
+
 x = RobotControl()
 
+x = ['t', 'e', 's', 't', ' ', 'e', 'r', 'r', 'o', 'r']
 
-print(datas)
+
