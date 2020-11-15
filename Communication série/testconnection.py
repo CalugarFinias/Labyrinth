@@ -32,5 +32,5 @@ while True:
             distance_left=int(line_split[1])
         if line_split[2]=='right' and int(line_split[3]) < maximum_distance:
             distance_right=int(line_split[1])
-        proximityTrigger(distance_left, distannce_right)
+        proximityTrigger(distance_left, distance_right)
         #time.sleep(0.2)
